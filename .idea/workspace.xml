@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0f4998f-8aa4-4ae3-aac3-6f896325d0d3" name="Changes" comment="versão inicial" />
+    <list default="true" id="c0f4998f-8aa4-4ae3-aac3-6f896325d0d3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Servidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Servidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/livros.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/livros.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +17,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="a0653687-5203-408d-97ec-aa8ac6f06c8f" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
@@ -50,7 +58,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717883674168</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="versão inicial com arquivos">
+      <option name="closed" value="true" />
+      <created>1717883959191</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717883959191</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -67,7 +83,8 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <MESSAGE value="versão inicial" />
-    <option name="LAST_COMMIT_MESSAGE" value="versão inicial" />
+    <MESSAGE value="versão inicial com arquivos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versão inicial com arquivos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

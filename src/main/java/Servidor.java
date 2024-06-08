@@ -64,8 +64,8 @@ public class Servidor {
                             break;
                         case "ALUGAR":
                             String tituloLivroAlugar = (String) input.readObject();
-                            alugarLivro(tituloLivroAlugar);
-                            output.writeObject("Livro alugado com sucesso");
+                            String respostaAluguel = alugarLivro(tituloLivroAlugar);
+                            output.writeObject(respostaAluguel);
                             output.flush();
                             output.writeObject("OK");
                             output.flush();
@@ -74,6 +74,14 @@ public class Servidor {
                             String tituloLivroDevolver = (String) input.readObject();
                             devolverLivro(tituloLivroDevolver);
                             output.writeObject("Livro devolvido com sucesso");
+                            output.flush();
+                            output.writeObject("OK");
+                            output.flush();
+                            break;
+                        case "REMOVER":
+                            String tituloLivroRemover = (String) input.readObject();
+                            String respostaRemover = removerLivro(tituloLivroRemover);
+                            output.writeObject(respostaRemover);
                             output.flush();
                             output.writeObject("OK");
                             output.flush();
@@ -103,15 +111,20 @@ public class Servidor {
             livroDAO.salvarLivros(livros);
         }
 
-        private void alugarLivro(String tituloLivro) throws IOException, ParseException {
+        private String alugarLivro(String tituloLivro) throws IOException, ParseException {
             List<Livro> livros = livroDAO.listarLivros();
             for (Livro livro : livros) {
-                if (livro.getTitulo().equals(tituloLivro) && livro.getExemplares() > 0) {
-                    livro.setExemplares(livro.getExemplares() - 1);
-                    livroDAO.salvarLivros(livros);
-                    break;
+                if (livro.getTitulo().equals(tituloLivro)) {
+                    if (livro.getExemplares() > 0) {
+                        livro.setExemplares(livro.getExemplares() - 1);
+                        livroDAO.salvarLivros(livros);
+                        return "Livro alugado com sucesso";
+                    } else {
+                        return "Nenhum exemplar disponível para aluguel";
+                    }
                 }
             }
+            return "Livro não encontrado";
         }
 
         private void devolverLivro(String tituloLivro) throws IOException, ParseException {
@@ -123,6 +136,18 @@ public class Servidor {
                     break;
                 }
             }
+        }
+
+        private String removerLivro(String tituloLivro) throws IOException, ParseException {
+            List<Livro> livros = livroDAO.listarLivros();
+            for (int i = 0; i < livros.size(); i++) {
+                if (livros.get(i).getTitulo().equals(tituloLivro)) {
+                    livros.remove(i);
+                    livroDAO.salvarLivros(livros);
+                    return "Livro removido com sucesso";
+                }
+            }
+            return "Livro não encontrado";
         }
     }
 }

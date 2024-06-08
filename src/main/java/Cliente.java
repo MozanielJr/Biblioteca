@@ -13,18 +13,11 @@ public class Cliente {
              ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
              ObjectInputStream input = new ObjectInputStream(socket.getInputStream())) {
 
-            System.out.println("Conectado ao servidor.");
+            System.out.println("Bem-vindo ao Sistema de Biblioteca!");
 
             while (true) {
-                System.out.println("\nMenu:");
-                System.out.println("1. Listar livros");
-                System.out.println("2. Cadastrar novo livro");
-                System.out.println("3. Alugar livro");
-                System.out.println("4. Devolver livro");
-                System.out.println("5. Sair");
-                System.out.print("Escolha uma opção: ");
-                int escolha = scanner.nextInt();
-                scanner.nextLine();  // Consume newline
+                mostrarMenu();
+                int escolha = lerEscolha();
 
                 switch (escolha) {
                     case 1:
@@ -40,6 +33,9 @@ public class Cliente {
                         devolverLivro(output, input);
                         break;
                     case 5:
+                        removerLivro(output, input);
+                        break;
+                    case 6:
                         System.out.println("Saindo...");
                         return;
                     default:
@@ -51,6 +47,27 @@ public class Cliente {
         }
     }
 
+    private static void mostrarMenu() {
+        System.out.println("\nMenu:");
+        System.out.println("1. Listar livros");
+        System.out.println("2. Cadastrar novo livro");
+        System.out.println("3. Alugar livro");
+        System.out.println("4. Devolver livro");
+        System.out.println("5. Remover livro");
+        System.out.println("6. Sair");
+        System.out.print("Escolha uma opção: ");
+    }
+
+    private static int lerEscolha() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Por favor, insira um número válido: ");
+            scanner.next();
+        }
+        int escolha = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+        return escolha;
+    }
+
     private static void listarLivros(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
         output.writeObject("LISTAR");
         output.flush();
@@ -60,10 +77,7 @@ public class Cliente {
         for (Livro livro : livros) {
             System.out.println(livro);
         }
-        String confirmacao = (String) input.readObject();
-        if (!"OK".equals(confirmacao)) {
-            throw new IOException("Erro na confirmação de recebimento");
-        }
+        esperarConfirmacao(input);
     }
 
     private static void cadastrarLivro(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
@@ -74,8 +88,7 @@ public class Cliente {
         System.out.print("Digite o gênero do livro: ");
         String genero = scanner.nextLine();
         System.out.print("Digite o número de exemplares: ");
-        int exemplares = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        int exemplares = lerNumeroExemplares();
 
         output.writeObject("CADASTRAR");
         output.writeObject(new Livro(titulo, autor, genero, exemplares));
@@ -83,10 +96,7 @@ public class Cliente {
         System.out.println("Comando CADASTRAR enviado.");
         String respostaCadastro = (String) input.readObject();
         System.out.println("Resposta recebida do servidor: " + respostaCadastro);
-        String confirmacao = (String) input.readObject();
-        if (!"OK".equals(confirmacao)) {
-            throw new IOException("Erro na confirmação de recebimento");
-        }
+        esperarConfirmacao(input);
     }
 
     private static void alugarLivro(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
@@ -99,10 +109,7 @@ public class Cliente {
         System.out.println("Comando ALUGAR enviado.");
         String respostaAluguel = (String) input.readObject();
         System.out.println("Resposta recebida do servidor: " + respostaAluguel);
-        String confirmacao = (String) input.readObject();
-        if (!"OK".equals(confirmacao)) {
-            throw new IOException("Erro na confirmação de recebimento");
-        }
+        esperarConfirmacao(input);
     }
 
     private static void devolverLivro(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
@@ -115,9 +122,36 @@ public class Cliente {
         System.out.println("Comando DEVOLVER enviado.");
         String respostaDevolucao = (String) input.readObject();
         System.out.println("Resposta recebida do servidor: " + respostaDevolucao);
+        esperarConfirmacao(input);
+    }
+
+    private static void removerLivro(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
+        System.out.print("Digite o título do livro para remover: ");
+        String titulo = scanner.nextLine();
+
+        output.writeObject("REMOVER");
+        output.writeObject(titulo);
+        output.flush();
+        System.out.println("Comando REMOVER enviado.");
+        String respostaRemover = (String) input.readObject();
+        System.out.println("Resposta recebida do servidor: " + respostaRemover);
+        esperarConfirmacao(input);
+    }
+
+    private static void esperarConfirmacao(ObjectInputStream input) throws IOException, ClassNotFoundException {
         String confirmacao = (String) input.readObject();
         if (!"OK".equals(confirmacao)) {
             throw new IOException("Erro na confirmação de recebimento");
         }
+    }
+
+    private static int lerNumeroExemplares() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Por favor, insira um número válido de exemplares: ");
+            scanner.next();
+        }
+        int exemplares = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+        return exemplares;
     }
 }
